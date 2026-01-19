@@ -182,24 +182,34 @@ export default function Home() {
     setResponse(null)
 
     try {
-      // Build the structured message for the agent
-      const message = JSON.stringify({
-        action: "send_channel_invites",
-        emails: validEmails,
-        personalization_context: context || "I'd like to invite you to join our community",
-        include_channel_description: includeDescription,
-        channel_name: "#made-with-architect"
-      })
+      // Build a clear, natural language message with structured data for the agent
+      const message = `Please send Slack channel invites to #made-with-architect for the following emails:
+
+Emails to invite: ${validEmails.join(', ')}
+
+Personalization context: "${context || "I'd like to invite you to join our community"}"
+
+${includeDescription ? 'Include a description of the #made-with-architect channel in the invite message.' : 'Do not include the channel description.'}
+
+For each email:
+1. Look up the Slack user using their email address
+2. Generate a personalized invite message with a greeting, the personalization context, and invitation to join #made-with-architect
+3. Send the DM to the user
+4. Return results showing which invites were sent successfully and which failed (with reasons)`
 
       const result = await callAIAgent(message, AGENT_ID)
 
       if (result.success) {
         setResponse(result.response)
       } else {
-        setError(result.error || 'Failed to send invites')
+        // Show detailed error information
+        const errorDetails = result.details || result.raw_response || result.error || 'Failed to send invites'
+        setError(errorDetails)
+        console.error('Agent error:', result)
       }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An unexpected error occurred')
+      console.error('Exception:', err)
     } finally {
       setLoading(false)
     }
@@ -398,9 +408,13 @@ export default function Home() {
             <CardContent className="pt-6">
               <div className="flex items-start gap-3">
                 <XCircle className="h-5 w-5 text-red-600 flex-shrink-0 mt-0.5" />
-                <div>
+                <div className="flex-1 min-w-0">
                   <p className="font-medium text-red-900">Error</p>
-                  <p className="text-sm text-red-700 mt-1">{error}</p>
+                  <ScrollArea className="max-h-[200px] mt-2">
+                    <pre className="text-sm text-red-700 whitespace-pre-wrap break-words font-mono bg-red-100 p-3 rounded">
+                      {error}
+                    </pre>
+                  </ScrollArea>
                 </div>
               </div>
             </CardContent>
