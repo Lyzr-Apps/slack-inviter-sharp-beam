@@ -182,10 +182,14 @@ export default function Home() {
     setResponse(null)
 
     try {
-      // Build the message for the agent
-      const message = `Send Slack channel invites to the following emails: ${validEmails.join(', ')}
-Context: ${context}
-Include channel description: ${includeDescription ? 'Yes' : 'No'}`
+      // Build the structured message for the agent
+      const message = JSON.stringify({
+        action: "send_channel_invites",
+        emails: validEmails,
+        personalization_context: context || "I'd like to invite you to join our community",
+        include_channel_description: includeDescription,
+        channel_name: "#made-with-architect"
+      })
 
       const result = await callAIAgent(message, AGENT_ID)
 
