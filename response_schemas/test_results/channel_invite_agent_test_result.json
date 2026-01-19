@@ -1,0 +1,37 @@
+{
+  "agent_name": "Channel Invite Agent",
+  "agent_id": "696e7c1de1e4c42b224b2a06",
+  "test_message": "{\"emails\": \"alice@company.com, bob@example.com\", \"personalization_context\": \"Great chatting at the hackathon!\"}",
+  "expected_purpose": "assistant",
+  "timestamp": "2026-01-19T18:47:47.857937",
+  "is_valid_json": true,
+  "validation_errors": [],
+  "actual_response": {
+    "status": "error",
+    "result": {
+      "invites_sent": [],
+      "invites_failed": [
+        {
+          "email": "alice@company.com",
+          "reason": "user_not_found",
+          "error_details": "Slack user lookup tool unavailable or failed."
+        },
+        {
+          "email": "bob@example.com",
+          "reason": "user_not_found",
+          "error_details": "Slack user lookup tool unavailable or failed."
+        }
+      ],
+      "summary": {
+        "total_emails": 2,
+        "successful": 0,
+        "failed": 2
+      }
+    },
+    "metadata": {
+      "agent_name": "Channel Invite Agent",
+      "timestamp": "2024-06-10T20:43:12.000Z"
+    }
+  },
+  "raw_response": "{\n  \"status\": \"error\",\n  \"result\": {\n    \"invites_sent\": [],\n    \"invites_failed\": [\n      {\n        \"email\": \"alice@company.com\",\n        \"reason\": \"user_not_found\",\n        \"error_details\": \"Slack user lookup tool unavailable or failed.\"\n      },\n      {\n        \"email\": \"bob@example.com\",\n        \"reason\": \"user_not_found\",\n        \"error_details\": \"Slack user lookup tool unavailable or failed.\"\n      }\n    ],\n    \"summary\": {\n      \"total_emails\": 2,\n      \"successful\": 0,\n      \"failed\": 2\n    }\n  },\n  \"metadata\": {\n    \"agent_name\": \"Channel Invite Agent\",\n    \"timestamp\": \"2024-06-10T20:43:12.000Z\"\n  }\n}"
+}

@@ -1,0 +1,21 @@
+{
+  "workflow_status": "complete",
+  "agents_created": [
+    {
+      "name": "Channel Invite Agent",
+      "agent_id": "696e7c1de1e4c42b224b2a06",
+      "type": "single",
+      "status": "active",
+      "response_schema_saved": true
+    }
+  ],
+  "workflow_structure": {
+    "type": "single_agent",
+    "flow": "user_input → channel_invite_agent → invite_output"
+  },
+  "next_steps": [
+    "UI generation",
+    "Slack authentication setup",
+    "Testing with real emails"
+  ]
+}

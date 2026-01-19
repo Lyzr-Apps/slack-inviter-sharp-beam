@@ -1,0 +1,68 @@
+{
+  "workflow": {
+    "name": "Slack Channel Invite Sender",
+    "description": "Sends personalized Slack channel invites to users by email",
+    "nodes": [
+      {
+        "id": "user_input",
+        "type": "Input",
+        "label": "Email List Input",
+        "nodeCategory": "input",
+        "position": { "x": 100, "y": 200 }
+      },
+      {
+        "id": "channel_invite_agent",
+        "type": "Agent",
+        "label": "Channel Invite Agent",
+        "nodeCategory": "agent",
+        "agentId": "696e7c1de1e4c42b224b2a06",
+        "position": { "x": 400, "y": 200 }
+      },
+      {
+        "id": "invite_output",
+        "type": "Output",
+        "label": "Invite Results",
+        "nodeCategory": "end",
+        "position": { "x": 700, "y": 200 }
+      }
+    ],
+    "edges": [
+      {
+        "source": "user_input",
+        "target": "channel_invite_agent"
+      },
+      {
+        "source": "channel_invite_agent",
+        "target": "invite_output"
+      }
+    ]
+  },
+  "agents": [
+    {
+      "agent_id": "696e7c1de1e4c42b224b2a06",
+      "name": "Channel Invite Agent",
+      "type": "single",
+      "description": "Looks up Slack users by email, generates personalized invite messages with greeting, invitation reason, and channel description, then sends DMs to invite them to #made-with-architect",
+      "provider": "OpenAI",
+      "model": "gpt-4.1",
+      "temperature": 0.6,
+      "top_p": 0.95,
+      "tools": [
+        {
+          "tool_name": "slack",
+          "tool_source": "composio",
+          "actions": [
+            "SLACK_LIST_ALL_SLACK_TEAM_USERS_WITH_PAGINATION",
+            "SLACK_SENDS_A_MESSAGE_TO_A_SLACK_CHANNEL"
+          ]
+        }
+      ],
+      "response_schema_file": "response_schemas/channel_invite_agent_response.json"
+    }
+  ],
+  "metadata": {
+    "created_at": "2026-01-19T00:00:00Z",
+    "total_agents": 1,
+    "workflow_type": "single_agent"
+  }
+}

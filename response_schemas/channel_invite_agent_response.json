@@ -1,0 +1,99 @@
+{
+  "agent_name": "Channel Invite Agent",
+  "agent_id": "696e7c1de1e4c42b224b2a06",
+  "agent_purpose": "assistant",
+  "description": "Looks up Slack users by email and sends personalized invites to #made-with-architect channel",
+  "response_schema": {
+    "status": "string",
+    "result": {
+      "invites_sent": [
+        {
+          "email": "string",
+          "user_id": "string",
+          "user_name": "string",
+          "message_sent": "boolean",
+          "timestamp": "string"
+        }
+      ],
+      "invites_failed": [
+        {
+          "email": "string",
+          "reason": "string",
+          "error_details": "string"
+        }
+      ],
+      "summary": {
+        "total_emails": "number",
+        "successful": "number",
+        "failed": "number"
+      }
+    },
+    "metadata": {
+      "agent_name": "string",
+      "timestamp": "string"
+    }
+  },
+  "example_response": {
+    "status": "success",
+    "result": {
+      "invites_sent": [
+        {
+          "email": "sam@example.com",
+          "user_id": "U123ABC",
+          "user_name": "Sam Doe",
+          "message_sent": true,
+          "timestamp": "2024-06-21T15:30:00Z"
+        }
+      ],
+      "invites_failed": [
+        {
+          "email": "jane@unknown.com",
+          "reason": "user_not_found",
+          "error_details": "No user found with that email address"
+        }
+      ],
+      "summary": {
+        "total_emails": 2,
+        "successful": 1,
+        "failed": 1
+      }
+    },
+    "metadata": {
+      "agent_name": "Channel Invite Agent",
+      "timestamp": "2024-06-21T15:30:02Z"
+    }
+  },
+  "is_actual_tested": true,
+  "test_timestamp": "2026-01-19T18:48:06.633539",
+  "test_message_used": "Hello, provide a sample response",
+  "actual_test_response": {
+    "status": "success",
+    "result": {
+      "invites_sent": [
+        {
+          "email": "sam@example.com",
+          "user_id": "U123ABC",
+          "user_name": "Sam Doe",
+          "message_sent": true,
+          "timestamp": "2024-06-21T15:30:00Z"
+        }
+      ],
+      "invites_failed": [
+        {
+          "email": "jane@unknown.com",
+          "reason": "user_not_found",
+          "error_details": "No user found with that email address"
+        }
+      ],
+      "summary": {
+        "total_emails": 2,
+        "successful": 1,
+        "failed": 1
+      }
+    },
+    "metadata": {
+      "agent_name": "Channel Invite Agent",
+      "timestamp": "2024-06-21T15:30:02Z"
+    }
+  }
+}
