@@ -200,9 +200,19 @@ For each email:
       const result = await callAIAgent(message, AGENT_ID)
 
       if (result.success) {
+        // Always set the response, even if agent status is "error"
         setResponse(result.response)
+
+        // If agent returned an error status, also show error message
+        if (result.response.status === 'error') {
+          const agentResult = result.response.result as AgentResult
+          if (agentResult?.invites_failed?.length > 0) {
+            const errors = agentResult.invites_failed.map(f => f.error_details).join('\n')
+            setError(errors)
+          }
+        }
       } else {
-        // Show detailed error information
+        // API-level error
         const errorDetails = result.details || result.raw_response || result.error || 'Failed to send invites'
         setError(errorDetails)
         console.error('Agent error:', result)
@@ -415,6 +425,14 @@ For each email:
                       {error}
                     </pre>
                   </ScrollArea>
+                  {error.includes('missing_scope') && (
+                    <div className="mt-3 p-3 bg-yellow-50 border border-yellow-200 rounded">
+                      <p className="text-sm text-yellow-800">
+                        <strong>Slack Permission Issue:</strong> The Slack integration needs additional permissions.
+                        The agent needs to reconnect to Slack with the following scopes: users:read, users:read.email, chat:write
+                      </p>
+                    </div>
+                  )}
                 </div>
               </div>
             </CardContent>
@@ -422,15 +440,21 @@ For each email:
         )}
 
         {/* Results Section */}
-        {response && response.status === 'success' && agentResult && (
+        {response && agentResult && (
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <CheckCircle className="h-5 w-5 text-green-600" />
+                {response.status === 'success' ? (
+                  <CheckCircle className="h-5 w-5 text-green-600" />
+                ) : (
+                  <AlertCircle className="h-5 w-5 text-yellow-600" />
+                )}
                 Invite Results
               </CardTitle>
               <CardDescription>
-                Summary of sent invitations
+                {response.status === 'success'
+                  ? 'Summary of sent invitations'
+                  : 'Some invites encountered issues'}
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">

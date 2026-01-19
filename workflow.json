@@ -54,6 +54,13 @@
           "actions": [
             "SLACK_LIST_ALL_SLACK_TEAM_USERS_WITH_PAGINATION",
             "SLACK_SENDS_A_MESSAGE_TO_A_SLACK_CHANNEL"
+          ],
+          "persist_auth": false,
+          "oauth_scopes": [
+            "users:read",
+            "users:read.email",
+            "chat:write",
+            "channels:read"
           ]
         }
       ],
