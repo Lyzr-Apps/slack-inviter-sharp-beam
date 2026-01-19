@@ -440,7 +440,7 @@ For each email:
         )}
 
         {/* Results Section */}
-        {response && agentResult && (
+        {response && agentResult && agentResult.summary && (
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
@@ -462,19 +462,19 @@ For each email:
               <div className="grid grid-cols-3 gap-4">
                 <div className="bg-gray-50 rounded-lg p-4 text-center">
                   <p className="text-2xl font-bold text-gray-900">
-                    {agentResult.summary.total_emails}
+                    {agentResult.summary?.total_emails || 0}
                   </p>
                   <p className="text-sm text-gray-600 mt-1">Total</p>
                 </div>
                 <div className="bg-green-50 rounded-lg p-4 text-center border border-green-200">
                   <p className="text-2xl font-bold text-green-700">
-                    {agentResult.summary.successful}
+                    {agentResult.summary?.successful || 0}
                   </p>
                   <p className="text-sm text-green-600 mt-1">Sent</p>
                 </div>
                 <div className="bg-red-50 rounded-lg p-4 text-center border border-red-200">
                   <p className="text-2xl font-bold text-red-700">
-                    {agentResult.summary.failed}
+                    {agentResult.summary?.failed || 0}
                   </p>
                   <p className="text-sm text-red-600 mt-1">Failed</p>
                 </div>
@@ -486,7 +486,7 @@ For each email:
               <ScrollArea className="h-[400px] pr-4">
                 <div className="space-y-3">
                   {/* Successful Invites */}
-                  {agentResult.invites_sent.length > 0 && (
+                  {agentResult.invites_sent && agentResult.invites_sent.length > 0 && (
                     <>
                       <h3 className="font-semibold text-green-700 flex items-center gap-2">
                         <CheckCircle className="h-4 w-4" />
@@ -499,9 +499,9 @@ For each email:
                   )}
 
                   {/* Failed Invites */}
-                  {agentResult.invites_failed.length > 0 && (
+                  {agentResult.invites_failed && agentResult.invites_failed.length > 0 && (
                     <>
-                      {agentResult.invites_sent.length > 0 && <Separator className="my-4" />}
+                      {agentResult.invites_sent && agentResult.invites_sent.length > 0 && <Separator className="my-4" />}
                       <h3 className="font-semibold text-red-700 flex items-center gap-2">
                         <XCircle className="h-4 w-4" />
                         Failed ({agentResult.invites_failed.length})
@@ -510,6 +510,14 @@ For each email:
                         <ResultItem key={`failed-${idx}`} invite={invite} />
                       ))}
                     </>
+                  )}
+
+                  {/* No Results Message */}
+                  {(!agentResult.invites_sent || agentResult.invites_sent.length === 0) &&
+                   (!agentResult.invites_failed || agentResult.invites_failed.length === 0) && (
+                    <div className="text-center py-8 text-gray-500">
+                      <p>No invite results to display</p>
+                    </div>
                   )}
                 </div>
               </ScrollArea>
